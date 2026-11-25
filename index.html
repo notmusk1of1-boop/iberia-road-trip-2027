@@ -19,6 +19,28 @@ section{margin-bottom:63px}.section-title{display:flex;align-items:end;justify-c
 @media print{.nav,.action{display:none}.wrap{width:100%}.hero{min-height:0;break-inside:avoid;margin-bottom:24px}.hero h1{font-size:36px}.hero-photo{min-height:150px}.hero-content{padding:20px}.day,.hotel,.route-board{break-inside:avoid}.days{gap:7px}.day{min-height:0}section{margin-bottom:26px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
+
+<style>
+.days{display:flex;flex-direction:column;gap:18px}
+.city-stay{background:var(--white);border:1px solid var(--line);border-radius:19px;overflow:hidden;break-inside:avoid}
+.city-stay-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:23px 28px;background:#e9eee4;border-bottom:1px solid var(--line)}
+.city-range{font-size:15px;font-weight:750;color:var(--green);letter-spacing:.02em}
+.city-stay-heading h3{font-size:28px;line-height:1.25;letter-spacing:-.035em;margin-top:3px}
+.night-count{font-size:17px;font-weight:750;color:var(--green);white-space:nowrap}
+.city-days{padding:0 28px}
+.day-entry{display:grid;grid-template-columns:83px minmax(0,1fr);gap:22px;padding:24px 0;scroll-margin-top:85px}
+.day-entry+.day-entry{border-top:1px solid var(--line)}
+.entry-date{display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--line);padding-right:14px}
+.entry-date strong{font-size:24px;line-height:1.35;letter-spacing:-.04em}
+.entry-date span{font-size:14px;color:var(--muted)}
+.entry-content h3{font-size:20px;line-height:1.4;margin:0 0 4px}
+.entry-content p{font-size:16px;line-height:1.8;color:#3d514a;margin-top:7px}
+.entry-drive{font-size:14px;color:var(--green);font-weight:700}
+.long-drive{color:#994320}
+.day-entry:target{background:#f1f3e8;outline:2px solid var(--green);outline-offset:7px;border-radius:5px}
+@media(max-width:680px){.city-stay-heading{padding:19px 18px}.city-stay-heading h3{font-size:24px}.city-days{padding:0 18px}.day-entry{grid-template-columns:58px minmax(0,1fr);gap:14px;padding:20px 0}.entry-date strong{font-size:21px}.entry-content h3{font-size:18px}.entry-content p{font-size:15px}.night-count{font-size:15px}.city-range{font-size:14px}}
+@media print{.city-stay{break-inside:auto}.day-entry{break-inside:avoid}}
+</style>
 </head>
 <body>
 <header class="nav"><div class="wrap"><strong>伊比利亚自驾</strong><nav aria-label="页内导航"><a href="#route">路线</a><a href="#days">日程</a><a href="#flight">航班</a></nav></div></header>
@@ -51,18 +73,14 @@ section{margin-bottom:63px}.section-title{display:flex;align-items:end;justify-c
   <p class="map-source">地图边界 <a href="https://www.naturalearthdata.com/">Natural Earth</a> · 道路数据 <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>，经 <a href="https://routing.openstreetmap.de/">OSRM</a> 查询。</p>
 </section>
 <section id="days">
-  <div class="section-title"><div><h2>逐日行程</h2><p>落地当天算第 1 天，从巴塞罗那起飞当天算第 11 天。</p></div></div>
-  <div class="days"><article class="day" id="day-1"><div class="date"><span>第 1 天</span><strong>1/17</strong><small>周日</small></div><div><span class="drive">机场进城</span><h3>巴塞罗那落地 · 市区游览</h3><p>06:55 落地，入境后寄存行李，逛哥特区和海边，下午入住休息。巴塞罗那连续住三晚。</p><span class="stay-ref">过夜城市 · 巴塞罗那</span></div></article>
-<article class="day" id="day-2"><div class="date"><span>第 2 天</span><strong>1/18</strong><small>周一</small></div><div><span class="drive">往返约 3 小时</span><h3>Tossa de Mar 一日游</h3><p>早上出发去 Tossa，游览 Vila Vella、城墙、灯塔和海滩。按冬季天气安排海岸步道，晚上回巴塞罗那。</p><span class="stay-ref">过夜城市 · 巴塞罗那</span></div></article>
-<article class="day" id="day-3"><div class="date"><span>第 3 天</span><strong>1/19</strong><small>周二</small></div><div><span class="drive">往返约 6 小时</span><h3>安道尔一日游 · 回巴塞罗那</h3><p>07:00 左右出发，白天逛安道尔城老街、购物和午餐，15:00 左右返程，晚上回巴塞罗那。当天需两次通过西班牙与安道尔边境。</p><span class="stay-ref">过夜城市 · 巴塞罗那</span></div></article>
-<article class="day" id="day-4"><div class="date"><span>第 4 天</span><strong>1/20</strong><small>周三</small></div><div><span class="drive long">纯驾驶约 11.5–12 小时</span><h3>巴塞罗那 → 格拉纳达</h3><p>06:30 左右出发，经 A-2 马德里外围、A-4/A-44 内陆南下，途中至少安排 2–3 次休息。含休息用餐约 13–14 小时，预计 20:00–21:00 抵达。两位驾驶员轮换更适合这一段。</p><span class="stay-ref">过夜城市 · 格拉纳达</span></div></article>
-<article class="day" id="day-5"><div class="date"><span>第 5 天</span><strong>1/21</strong><small>周四</small></div><div><span class="drive long">市内游览</span><h3>格拉纳达 · 阿尔罕布拉宫</h3><p>上午参观含纳斯瑞德宫的 Alhambra General，按票面时段入场，留 3–4 小时。下午逛阿尔拜辛和圣尼古拉斯观景台，晚上继续住格拉纳达。</p><span class="stay-ref">过夜城市 · 格拉纳达</span></div></article>
-<article class="day" id="day-6"><div class="date"><span>第 6 天</span><strong>1/22</strong><small>周五</small></div><div><span class="drive">自驾约 3 小时</span><h3>格拉纳达 → 塞维利亚</h3><p>上午可在格拉纳达慢逛，午前后出发去塞维利亚。下午游览西班牙广场和玛丽亚路易莎公园，晚上逛圣十字区。</p><span class="stay-ref">过夜城市 · 塞维利亚</span></div></article>
-<article class="day" id="day-7"><div class="date"><span>第 7 天</span><strong>1/23</strong><small>周六</small></div><div><span class="drive">市内步行＋公共交通</span><h3>塞维利亚 · 完整一天</h3><p>上午王宫，下午大教堂与吉拉尔达塔，晚上可选弗拉门戈，继续住塞维利亚。</p><span class="stay-ref">过夜城市 · 塞维利亚</span></div></article>
-<article class="day" id="day-8"><div class="date"><span>第 8 天</span><strong>1/24</strong><small>周日</small></div><div><span class="drive">总驾驶约 6.5–7.5 小时</span><h3>塞维利亚 → 里斯本 · 罗卡角</h3><p>建议 07:00 左右出发，进入葡萄牙后时钟拨慢 1 小时。抵里斯本后按行李安排前往罗卡角，海角留 1–1.5 小时，尽量在天黑前完成游览，晚上回里斯本住一晚。</p><span class="stay-ref">过夜城市 · 里斯本</span></div></article>
-<article class="day" id="day-9"><div class="date"><span>第 9 天</span><strong>1/25</strong><small>周一</small></div><div><span class="drive">约 6–7 小时</span><h3>里斯本 → 马德里西郊</h3><p>可早起在里斯本商业广场短逛，09:00 左右出发，经梅里达方向返回西班牙，时钟拨快 1 小时，晚上在马德里西郊休息。</p><span class="stay-ref">过夜城市 · 马德里西郊</span></div></article>
-<article class="day" id="day-10"><div class="date"><span>第 10 天</span><strong>1/26</strong><small>周二</small></div><div><span class="drive long">约 6–7 小时</span><h3>马德里 → 巴塞罗那机场附近</h3><p>早上出发，中途吃饭和休息，傍晚抵巴塞罗那机场附近。可按租车门店营业时间提前还车，并确认次日去 T1 的方式。</p><span class="stay-ref">过夜城市 · 巴塞罗那机场附近</span></div></article>
-<article class="day" id="day-11"><div class="date"><span>第 11 天</span><strong>1/27</strong><small>周三</small></div><div><span class="drive long">21:50 从 BCN T1 起飞</span><h3>巴塞罗那 · 晚班机回程</h3><p>白天可休息或按行李寄存情况轻松进城。建议 18:00 前到 T1，另留还车、加油和取行李时间。经阿布扎比中转，29 日 08:40 抵香港。</p></div></article></div>
+  <div class="section-title"><div><h2>按城市看行程</h2><p>同一过夜城市放在一个框内，按日期展开每天的安排。1 月 17 日落地，27 日起飞。</p></div></div>
+  <div class="days"><article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/17–1/19</span><h3>巴塞罗那</h3></div><span class="night-count">住 3 晚</span></header><div class="city-days"><div class="day-entry" id="day-1"><div class="entry-date"><strong>1/17</strong><span>周日</span></div><div class="entry-content"><h3>巴塞罗那落地 · 市区游览</h3><span class="entry-drive">机场进城</span><p>06:55 落地，入境后寄存行李，逛哥特区和海边，下午入住休息。巴塞罗那连续住三晚。</p></div></div><div class="day-entry" id="day-2"><div class="entry-date"><strong>1/18</strong><span>周一</span></div><div class="entry-content"><h3>Tossa de Mar 一日游</h3><span class="entry-drive">往返约 3 小时</span><p>早上出发去 Tossa，游览 Vila Vella、城墙、灯塔和海滩。按冬季天气安排海岸步道，晚上回巴塞罗那。</p></div></div><div class="day-entry" id="day-3"><div class="entry-date"><strong>1/19</strong><span>周二</span></div><div class="entry-content"><h3>安道尔一日游 · 回巴塞罗那</h3><span class="entry-drive">往返约 6 小时</span><p>07:00 左右出发，白天逛安道尔城老街、购物和午餐，15:00 左右返程，晚上回巴塞罗那。当天需两次通过西班牙与安道尔边境。</p></div></div></div></article>
+<article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/20–1/21</span><h3>格拉纳达</h3></div><span class="night-count">住 2 晚</span></header><div class="city-days"><div class="day-entry" id="day-4"><div class="entry-date"><strong>1/20</strong><span>周三</span></div><div class="entry-content"><h3>巴塞罗那 → 格拉纳达</h3><span class="entry-drive long-drive">纯驾驶约 11.5–12 小时</span><p>06:30 左右出发，经 A-2 马德里外围、A-4/A-44 内陆南下，途中至少安排 2–3 次休息。含休息用餐约 13–14 小时，预计 20:00–21:00 抵达。两位驾驶员轮换更适合这一段。</p></div></div><div class="day-entry" id="day-5"><div class="entry-date"><strong>1/21</strong><span>周四</span></div><div class="entry-content"><h3>格拉纳达 · 阿尔罕布拉宫</h3><span class="entry-drive">市内游览</span><p>上午参观含纳斯瑞德宫的 Alhambra General，按票面时段入场，留 3–4 小时。下午逛阿尔拜辛和圣尼古拉斯观景台，晚上继续住格拉纳达。</p></div></div></div></article>
+<article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/22–1/23</span><h3>塞维利亚</h3></div><span class="night-count">住 2 晚</span></header><div class="city-days"><div class="day-entry" id="day-6"><div class="entry-date"><strong>1/22</strong><span>周五</span></div><div class="entry-content"><h3>格拉纳达 → 塞维利亚</h3><span class="entry-drive">自驾约 3 小时</span><p>上午可在格拉纳达慢逛，午前后出发去塞维利亚。下午游览西班牙广场和玛丽亚路易莎公园，晚上逛圣十字区。</p></div></div><div class="day-entry" id="day-7"><div class="entry-date"><strong>1/23</strong><span>周六</span></div><div class="entry-content"><h3>塞维利亚 · 完整一天</h3><span class="entry-drive">市内步行＋公共交通</span><p>上午王宫，下午大教堂与吉拉尔达塔，晚上可选弗拉门戈，继续住塞维利亚。</p></div></div></div></article>
+<article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/24</span><h3>里斯本</h3></div><span class="night-count">住 1 晚</span></header><div class="city-days"><div class="day-entry" id="day-8"><div class="entry-date"><strong>1/24</strong><span>周日</span></div><div class="entry-content"><h3>塞维利亚 → 里斯本 · 罗卡角</h3><span class="entry-drive">总驾驶约 6.5–7.5 小时</span><p>建议 07:00 左右出发，进入葡萄牙后时钟拨慢 1 小时。抵里斯本后按行李安排前往罗卡角，海角留 1–1.5 小时，尽量在天黑前完成游览，晚上回里斯本住一晚。</p></div></div></div></article>
+<article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/25</span><h3>马德里西郊</h3></div><span class="night-count">住 1 晚</span></header><div class="city-days"><div class="day-entry" id="day-9"><div class="entry-date"><strong>1/25</strong><span>周一</span></div><div class="entry-content"><h3>里斯本 → 马德里西郊</h3><span class="entry-drive long-drive">约 6–7 小时</span><p>可早起在里斯本商业广场短逛，09:00 左右出发，经梅里达方向返回西班牙，时钟拨快 1 小时，晚上在马德里西郊休息。</p></div></div></div></article>
+<article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/26</span><h3>巴塞罗那机场附近</h3></div><span class="night-count">住 1 晚</span></header><div class="city-days"><div class="day-entry" id="day-10"><div class="entry-date"><strong>1/26</strong><span>周二</span></div><div class="entry-content"><h3>马德里 → 巴塞罗那机场附近</h3><span class="entry-drive long-drive">约 6–7 小时</span><p>早上出发，中途吃饭和休息，傍晚抵巴塞罗那机场附近。可按租车门店营业时间提前还车，并确认次日去 T1 的方式。</p></div></div></div></article>
+<article class="city-stay"><header class="city-stay-heading"><div><span class="city-range">1/27</span><h3>巴塞罗那 · 回程</h3></div><span class="night-count">21:50 起飞</span></header><div class="city-days"><div class="day-entry" id="day-11"><div class="entry-date"><strong>1/27</strong><span>周三</span></div><div class="entry-content"><h3>巴塞罗那 · 晚班机回程</h3><span class="entry-drive">21:50 从 BCN T1 起飞</span><p>白天可休息或按行李寄存情况轻松进城。建议 18:00 前到 T1，另留还车、加油和取行李时间。经阿布扎比中转，29 日 08:40 抵香港。</p></div></div></div></article></div>
 </section>
 <section id="flight">
   <div class="section-title"><div><h2>抵达和返程</h2><p>时刻为当地时间。价格是上一版攻略在 2026 年 11 月 26 日的查询记录。</p></div></div>
