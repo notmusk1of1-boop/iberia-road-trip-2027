@@ -185,14 +185,14 @@ drawMap();
 </script>
 <script>
 (() => {
-  let data = {"schema_version": 1, "checked_at": "2026-11-26T04:18:34+00:00", "price_date": "2026-11-23", "published_label": "26 November 2026", "source": "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en", "workbook_url": "https://energy.ec.europa.eu/document/download/264c2d0f-f161-4ea3-a777-78faae59bea0_en?filename=Weekly%20Oil%20Bulletin%20Weekly%20prices%20with%20Taxes%20-%202026-09-21.xlsx", "frequency": "weekly", "tax_included": true, "currency": "EUR", "unit": "per_litre", "countries": {"PT": {"petrol95": 1.856, "diesel": 2.04}, "ES": {"petrol95": 1.560072, "diesel": 1.792259}}, "exchange_rate": {"eur_cny": 7.2999, "date": "2026-11-25", "source": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"}};
+  let data = {"schema_version": 1, "checked_at": "2026-11-26T04:22:02+00:00", "price_date": "2026-11-23", "published_label": "26 November 2026", "source": "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en", "workbook_url": "https://energy.ec.europa.eu/document/download/264c2d0f-f161-4ea3-a777-78faae59bea0_en?filename=Weekly%20Oil%20Bulletin%20Weekly%20prices%20with%20Taxes%20-%202026-09-21.xlsx", "frequency": "weekly", "tax_included": true, "currency": "EUR", "unit": "per_litre", "countries": {"PT": {"petrol95": 1.856, "diesel": 2.04}, "ES": {"petrol95": 1.560072, "diesel": 1.792259}}, "exchange_rate": {"eur_cny": 7.2999, "date": "2026-11-25", "source": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"}};
   let refreshing = false;
   const el = id => document.getElementById('fuel-' + id);
   const euro = n => new Intl.NumberFormat('zh-CN', {style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
   const exactEuro = n => '€' + n.toFixed(2);
   const litres = n => n.toLocaleString('zh-CN',{maximumFractionDigits:1});
   function validData(value) {
-    return value?.schema_version === 1 && /^\d{4}-\d{2}-\d{2}$/.test(value.price_date) &&
+    return value?.schema_version === 1 && /^\d{4}-\d{2}-\d{2}$/.test(value.price_date) && Number.isFinite(Date.parse(value.checked_at)) &&
       ['ES','PT'].every(country => ['petrol95','diesel'].every(type => Number.isFinite(value.countries?.[country]?.[type]) && value.countries[country][type] > .3 && value.countries[country][type] < 8));
   }
   function render() {
@@ -245,7 +245,7 @@ drawMap();
       const response = await fetch(url, {cache:'no-store',signal:controller.signal});
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const incoming = await response.json(); if (!validData(incoming)) throw new Error('Unexpected fuel data');
-      if (incoming.price_date >= data.price_date && incoming.checked_at >= data.checked_at) data = incoming;
+      if (incoming.price_date >= data.price_date && Date.parse(incoming.checked_at) >= Date.parse(data.checked_at)) data = incoming;
       render(); freshness('已读取最新已同步数据 · 官方油价周更');
     } catch {
       el('status').classList.add('fuel-stale'); el('status').textContent = '本次同步失败，仍显示标注日期的最近数据';
