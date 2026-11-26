@@ -240,22 +240,23 @@ drawMap();
 <script>
 (() => {
  'use strict';
- const API='https://iberia-shared-budget-2027.notmusk1of1.chatgpt.site';
+ const API='https://iberia-budget-notmusk1of1-2027.netlify.app/.netlify/functions/budget';
  const root=document.getElementById('budget'),$=id=>document.getElementById('budget-'+id);
- let state,editing=null,token='',busy=false,loadSequence=0;
+ let state,editing=null,token='',busy=false,loadSequence=0,online=false;
  try{token=sessionStorage.getItem('iberia-budget-editor')||'';}catch{}
  const money=(n,currency='CNY')=>new Intl.NumberFormat('zh-CN',{style:'currency',currency,maximumFractionDigits:2}).format(n);
  function element(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
  function saveToken(value){token=value;try{if(value)sessionStorage.setItem('iberia-budget-editor',value);else sessionStorage.removeItem('iberia-budget-editor');}catch{}renderPermissions();}
- function renderPermissions(){root.querySelectorAll('[data-editor]').forEach(n=>n.hidden=!token);$('lock').hidden=!token;$('unlock').hidden=!!token;}
+ function renderPermissions(){root.querySelectorAll('[data-editor]').forEach(n=>n.hidden=!token||!online);$('lock').hidden=!token;$('unlock').hidden=!!token;$('unlock').disabled=!online;}
  function error(message){$('error').textContent=message||'';$('error').hidden=!message;}
  async function request(path,method='GET',body){
   const headers={};if(body!==undefined)headers['Content-Type']='application/json';if(token)headers.Authorization='Bearer '+token;
-  const r=await fetch(API+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(18000),cache:'no-store'});
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),18000);let r;
+  try{r=await fetch(API+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:controller.signal,cache:'no-store'});}catch{throw Error('当前网络未能连接共享账本，请稍后点击刷新。');}finally{clearTimeout(timer);}
   let d;try{d=await r.json();}catch{throw Error('共享服务暂时无法读取，请稍后刷新');}
   if(!r.ok){if(r.status===401&&path!=='/api/login')saveToken('');throw Error(d.error||'操作未完成');}return d;
  }
- async function load(quiet=false){const sequence=++loadSequence;try{if(!quiet)$('sync').textContent='正在同步…';const next=await request('/api/state');if(sequence!==loadSequence)return;state=next;render();error('');$('sync').textContent='已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})+' · '+(token?'编辑模式':'访客只读');}catch(e){error((state?'显示上次读取的数据；':'')+'同步失败：'+e.message);$('sync').textContent='连接暂不可用';}}
+ async function load(quiet=false){const sequence=++loadSequence;try{if(!quiet)$('sync').textContent='正在同步…';const next=await request('/api/state');if(sequence!==loadSequence)return;state=next;online=true;try{localStorage.setItem('iberia-budget-cache',JSON.stringify({data:state,at:Date.now()}));}catch{}render();error('');$('sync').textContent='已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})+' · '+(token?'编辑模式':'访客只读');}catch(e){if(sequence!==loadSequence)return;online=false;error((state?'正在显示上次同步的只读数据。':'')+e.message);$('sync').textContent='暂未连接 · 只读';renderPermissions();}}
  function render(){
   $('content').hidden=false;const total=state.entries.reduce((s,e)=>s+e.rmb_cents,0)/100,paid=state.entries.filter(e=>e.status==='paid').reduce((s,e)=>s+e.rmb_cents,0)/100,remain=state.budget-total;
   $('limit').textContent=money(state.budget);$('total').textContent=money(total);$('paid').textContent=money(paid);$('unpaid').textContent='未付 '+money(total-paid);$('remain').textContent=money(Math.abs(remain));$('remain-label').textContent=remain<0?'超出预算':'预算剩余';$('remaining-card').classList.toggle('over-budget',remain<0);$('bar').style.width=Math.min(100,total/state.budget*100)+'%';$('bar').style.background=remain<0?'#a14d2f':'#267361';root.querySelector('.budget-progress').setAttribute('aria-valuenow',String(Math.min(100,Math.round(total/state.budget*100))));
@@ -281,7 +282,8 @@ drawMap();
  $('lock').addEventListener('click',async()=>{try{await request('/api/logout','POST',{});}catch{}saveToken('');await load();});
  $('set').addEventListener('click',()=>{const n=prompt('两人总预算（人民币）',state.budget);if(n===null)return;if(!Number.isFinite(Number(n))||Number(n)<1){error('请填写有效总预算');return;}mutate('/api/budget','PUT',{budget:Number(n)});});
  $('add').addEventListener('click',()=>openEditor());$('refresh').addEventListener('click',()=>load());for(const n of [$('filter-category'),$('filter-status')])n.addEventListener('change',()=>state&&renderEntries());
- renderPermissions();load();setInterval(()=>{if(!document.hidden&&!busy)load(true);},30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)load(true);});
+ try{const cached=JSON.parse(localStorage.getItem('iberia-budget-cache'));if(cached?.data?.entries&&cached.data.categories&&cached.data.exchangeRate&&Number.isFinite(cached.data.budget)){state=cached.data;render();$('sync').textContent='上次同步 '+new Date(cached.at).toLocaleString('zh-CN')+' · 正在连接';}}catch{}
+ renderPermissions();load();setInterval(()=>{if(!document.hidden&&!busy)load(true);},30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)load(true);});window.addEventListener('online',()=>load(true));
 })();
 
 </script>
