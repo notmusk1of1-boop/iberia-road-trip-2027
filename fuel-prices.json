@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-11-26T13:33:58+00:00",
+  "checked_at": "2026-11-26T19:12:00+00:00",
   "price_date": "2026-11-23",
   "published_label": "26 November 2026",
   "source": "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en",
@@ -20,8 +20,8 @@
     }
   },
   "exchange_rate": {
-    "eur_cny": 7.2999,
-    "date": "2026-11-25",
+    "eur_cny": 7.3096,
+    "date": "2026-11-26",
     "source": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
   }
 }
