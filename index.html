@@ -174,5 +174,90 @@ for (const [index, button] of controls.entries()) {
 }
 drawMap();
 </script>
+<style>
+.section-toggle{appearance:none;border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;line-height:inherit;text-align:left;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:12px;border-radius:5px}
+.section-toggle:hover{color:var(--green)}
+.section-toggle-icon{width:24px;height:24px;flex-shrink:0;display:inline-grid;place-items:center;border:1px solid #b9c7b7;border-radius:50%;color:var(--green)}
+.section-toggle-icon svg{width:14px;height:14px;transform:rotate(0deg)}
+.section-toggle[aria-expanded=false] .section-toggle-icon svg{transform:rotate(-90deg)}
+.section-body[hidden]{display:none!important}
+.section-collapsed>.section-title>.action{display:none}
+.section-collapsed{padding-bottom:18px;border-bottom:1px solid var(--line)}
+@media(max-width:680px){.section-toggle{gap:9px}.section-toggle-icon{width:22px;height:22px}}
+@media print{.section-body[hidden]{display:block!important}.section-toggle-icon{display:none}.section-collapsed>.section-title>.action{display:inline-flex}.section-collapsed{padding-bottom:0;border-bottom:0}}
+</style>
+<script>
+(() => {
+  const ids = ['route', 'days', 'stays', 'reservations', 'flight'];
+  const sections = new Map();
+  function setExpanded(section, expanded) {
+    const state = sections.get(section.id);
+    if (!state) return;
+    state.body.hidden = !expanded;
+    state.button.setAttribute('aria-expanded', String(expanded));
+    state.button.title = expanded ? '收起此板块（保留标题和简介）' : '展开此板块';
+    section.classList.toggle('section-collapsed', !expanded);
+  }
+  for (const id of ids) {
+    const section = document.getElementById(id);
+    const header = section?.querySelector(':scope > .section-title');
+    const heading = header?.querySelector('h2');
+    if (!heading) continue;
+    const label = heading.textContent;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'section-toggle';
+    button.setAttribute('aria-expanded', 'true');
+    button.setAttribute('aria-controls', id + '-body');
+    const text = document.createElement('span');
+    text.textContent = label;
+    const icon = document.createElement('span');
+    icon.className = 'section-toggle-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    button.append(text, icon);
+    heading.replaceChildren(button);
+    const body = document.createElement('div');
+    body.className = 'section-body';
+    body.id = id + '-body';
+    // The heading, short description, and introductory notices remain visible.
+    let node = header.nextElementSibling;
+    while (node?.matches('.stay-notice, .booking-note')) node = node.nextElementSibling;
+    while (node) {
+      const next = node.nextElementSibling;
+      body.append(node);
+      node = next;
+    }
+    section.append(body);
+    section.dataset.collapsible = 'true';
+    sections.set(id, {button, body});
+    setExpanded(section, true);
+    button.addEventListener('click', () => setExpanded(section, body.hidden));
+  }
+  function revealHash(hash, scroll) {
+    if (!hash || hash === '#') return;
+    let target;
+    try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch { return; }
+    const section = target?.closest('section[data-collapsible]');
+    if (!section) return;
+    setExpanded(section, true);
+    if (scroll) requestAnimationFrame(() => target.scrollIntoView({block:'start'}));
+  }
+  document.addEventListener('click', event => {
+    const anchor = event.target.closest('a[href]');
+    if (!anchor || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || anchor.target === '_blank') return;
+    const url = new URL(anchor.href, location.href);
+    if (url.origin === location.origin && url.pathname === location.pathname) revealHash(url.hash, true);
+  }, true);
+  window.addEventListener('hashchange', () => revealHash(location.hash, true));
+  // Browser back/forward cache must not restore a previously collapsed view.
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) for (const id of ids) setExpanded(document.getElementById(id), true);
+    revealHash(location.hash, true);
+  });
+  revealHash(location.hash, true);
+})();
+</script>
+
 </body>
 </html>
